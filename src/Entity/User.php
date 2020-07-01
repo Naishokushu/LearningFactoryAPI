@@ -26,6 +26,20 @@ class User
     /**
      * @var string
      *
+     * @ORM\Column(name="mail", type="string", length=255, nullable=false)
+     */
+    private $mail;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=255, nullable=false)
+     */
+    private $password;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="name", type="string", length=45, nullable=false)
      */
     private $name;
@@ -33,9 +47,9 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="firtname", type="string", length=45, nullable=false)
+     * @ORM\Column(name="firstname", type="string", length=45, nullable=false)
      */
-    private $firtname;
+    private $firstname;
 
     /**
      * @var \DateTime
@@ -84,6 +98,30 @@ class User
         return $this->iduser;
     }
 
+    public function getMail(): ?string
+    {
+        return $this->mail;
+    }
+
+    public function setMail(string $mail): self
+    {
+        $this->mail = $mail;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
     public function getName(): ?string
     {
         return $this->name;
@@ -96,14 +134,14 @@ class User
         return $this;
     }
 
-    public function getFirtname(): ?string
+    public function getFirstname(): ?string
     {
-        return $this->firtname;
+        return $this->firstname;
     }
 
-    public function setFirtname(string $firtname): self
+    public function setFirstname(string $firstname): self
     {
-        $this->firtname = $firtname;
+        $this->firstname = $firstname;
 
         return $this;
     }

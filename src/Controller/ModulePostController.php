@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ModulePostController extends AbstractController
 {
     /**
-     * @Route("/module/post", name="module_post_index", methods={"GET"})
+     * @Route("/api/module/post", name="module_post_index", methods={"GET"})
      */
     public function index()
     {

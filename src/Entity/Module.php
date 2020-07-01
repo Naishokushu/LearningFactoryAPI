@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Module
- *
+ * @ApiResource
  * @ORM\Table(name="module", uniqueConstraints={@ORM\UniqueConstraint(name="idmodule_UNIQUE", columns={"idmodule"})}, indexes={@ORM\Index(name="fk_module_difficulty1_idx", columns={"iddifficulty"}), @ORM\Index(name="fk_module_image1_idx", columns={"idimage"}), @ORM\Index(name="fk_module_topic1_idx", columns={"idtopic"})})
  * @ORM\Entity
  */
@@ -18,6 +19,7 @@ class Module
      * @ORM\Column(name="idmodule", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ApiResource()
      */
     private $idmodule;
 
@@ -110,6 +112,4 @@ class Module
 
         return $this;
     }
-
-
 }
