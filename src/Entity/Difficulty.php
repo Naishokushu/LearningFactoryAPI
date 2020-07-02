@@ -3,12 +3,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Difficulty
  *
  * @ORM\Table(name="difficulty", uniqueConstraints={@ORM\UniqueConstraint(name="iddifficulty_UNIQUE", columns={"iddifficulty"})})
  * @ORM\Entity
+ * @ApiResource
  */
 class Difficulty
 {
@@ -18,6 +21,7 @@ class Difficulty
      * @ORM\Column(name="iddifficulty", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * 
      */
     private $iddifficulty;
 
@@ -25,6 +29,7 @@ class Difficulty
      * @var string
      *
      * @ORM\Column(name="level", type="string", length=45, nullable=false)
+     * @Groups({"module"})
      */
     private $level;
 

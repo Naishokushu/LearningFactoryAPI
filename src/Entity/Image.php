@@ -3,12 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Image
  *
  * @ORM\Table(name="image", uniqueConstraints={@ORM\UniqueConstraint(name="idimage_UNIQUE", columns={"idimage"})})
  * @ORM\Entity
+ * @ApiResource
+ * 
  */
 class Image
 {
@@ -18,6 +22,7 @@ class Image
      * @ORM\Column(name="idimage", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * 
      */
     private $idimage;
 
@@ -25,6 +30,7 @@ class Image
      * @var string|null
      *
      * @ORM\Column(name="name", type="string", length=45, nullable=true)
+     * @Groups({"module"})
      */
     private $name;
 
@@ -32,6 +38,7 @@ class Image
      * @var string|null
      *
      * @ORM\Column(name="path", type="string", length=250, nullable=true)
+     * @Groups({"module"})
      */
     private $path;
 

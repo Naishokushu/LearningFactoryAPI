@@ -3,12 +3,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * Topic
  *
  * @ORM\Table(name="topic", uniqueConstraints={@ORM\UniqueConstraint(name="idtopic_UNIQUE", columns={"idtopic"})})
  * @ORM\Entity
+ * @ApiResource
  */
 class Topic
 {
