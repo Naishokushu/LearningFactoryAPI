@@ -3,39 +3,45 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\DifficultyRepository;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * Difficulty
- *
- * @ORM\Table(name="difficulty", uniqueConstraints={@ORM\UniqueConstraint(name="iddifficulty_UNIQUE", columns={"iddifficulty"})})
- * @ORM\Entity
- * @ApiResource
+ * @ApiResource()
+ * @ORM\Entity(repositoryClass=DifficultyRepository::class)
  */
 class Difficulty
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="iddifficulty", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * 
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private $iddifficulty;
+    private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="level", type="string", length=45, nullable=false)
-     * @Groups({"module"})
+     * @ORM\Column(type="string", length=50)
+     * Groups({"module"})
      */
     private $level;
 
-    public function getIddifficulty(): ?int
+    /**
+     * @ORM\OneToMany(targetEntity=Module::class, mappedBy="difficulty")
+     * 
+     */
+    private $modules;
+
+    public function __construct()
     {
-        return $this->iddifficulty;
+        $this->modules = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getLevel(): ?string
@@ -50,5 +56,34 @@ class Difficulty
         return $this;
     }
 
+    /**
+     * @return Collection|Module[]
+     */
+    public function getModules(): Collection
+    {
+        return $this->modules;
+    }
 
+    public function addModule(Module $module): self
+    {
+        if (!$this->modules->contains($module)) {
+            $this->modules[] = $module;
+            $module->setDifficulty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeModule(Module $module): self
+    {
+        if ($this->modules->contains($module)) {
+            $this->modules->removeElement($module);
+            // set the owning side to null (unless already changed)
+            if ($module->getDifficulty() === $this) {
+                $module->setDifficulty(null);
+            }
+        }
+
+        return $this;
+    }
 }

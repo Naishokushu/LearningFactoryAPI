@@ -2,77 +2,64 @@
 
 namespace App\Entity;
 
-
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ModuleRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
- * Module
- * 
- * @ORM\Table(name="module", uniqueConstraints={@ORM\UniqueConstraint(name="idmodule_UNIQUE", columns={"idmodule"})}, indexes={@ORM\Index(name="fk_module_difficulty1_idx", columns={"iddifficulty"}), @ORM\Index(name="fk_module_image1_idx", columns={"idimage"}), @ORM\Index(name="fk_module_topic1_idx", columns={"idtopic"})})
- * @ORM\Entity
  * @ApiResource(
- *  normalizationContext={"groups"={"module"}},
- *  collectionOperations={"get"},
- *  itemOperations={"get"})
+ * normalizationContext={"groups"={"module"}, "enable_max_depth"=true}
+ * )
+ * @ORM\Entity(repositoryClass=ModuleRepository::class)
  */
 class Module
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="idmodule", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      * @Groups({"module"})
      */
-    private $idmodule;
+    private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=45, nullable=false)
+     * @ORM\Column(type="string", length=255)
      * @Groups({"module"})
      */
     private $name;
 
     /**
-     * @var \Difficulty
-     *
-     * @ORM\ManyToOne(targetEntity="Difficulty")
-     * @ORM\JoinColumns({
-     * @ORM\JoinColumn(name="iddifficulty", referencedColumnName="iddifficulty")
-     * })
+     * @ORM\Column(type="text")
      * @Groups({"module"})
      */
-    private $iddifficulty;
+    private $content;
 
     /**
-     * @var \Image
-     *
-     * @ORM\ManyToOne(targetEntity="Image")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idimage", referencedColumnName="idimage")
-     * })
+     * @ORM\ManyToOne(targetEntity=Topic::class, inversedBy="modules")
+     * @ORM\JoinColumn(nullable=false)
      * @Groups({"module"})
      */
-    private $idimage;
+    private $topic;
 
     /**
-     * @var \Topic
-     *
-     * @ORM\ManyToOne(targetEntity="Topic")
-     * @ORM\JoinColumns({
-     * @ORM\JoinColumn(name="idtopic", referencedColumnName="idtopic")
-     * })
+     * @ORM\ManyToOne(targetEntity=Difficulty::class, inversedBy="modules")
+     * @Groups({"module"})
+     * 
+     */
+    private $difficulty;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Image::class, inversedBy="modules")
+     * @ORM\JoinColumn(nullable=false)
      * @Groups({"module"})
      */
-    private $idtopic;
+    private $image;
 
-    public function getIdmodule(): ?int
+    public function getId(): ?int
     {
-        return $this->idmodule;
+        return $this->id;
     }
 
     public function getName(): ?string
@@ -87,38 +74,50 @@ class Module
         return $this;
     }
 
-    public function getIddifficulty(): ?Difficulty
+    public function getContent(): ?string
     {
-        return $this->iddifficulty;
+        return $this->content;
     }
 
-    public function setIddifficulty(?Difficulty $iddifficulty): self
+    public function setContent(string $content): self
     {
-        $this->iddifficulty = $iddifficulty;
+        $this->content = $content;
 
         return $this;
     }
 
-    public function getIdimage(): ?Image
+    public function getTopic(): ?topic
     {
-        return $this->idimage;
+        return $this->topic;
     }
 
-    public function setIdimage(?Image $idimage): self
+    public function setTopic(?topic $topic): self
     {
-        $this->idimage = $idimage;
+        $this->topic = $topic;
 
         return $this;
     }
 
-    public function getIdtopic(): ?Topic
+    public function getDifficulty(): ?difficulty
     {
-        return $this->idtopic;
+        return $this->difficulty;
     }
 
-    public function setIdtopic(?Topic $idtopic): self
+    public function setDifficulty(?difficulty $difficulty): self
     {
-        $this->idtopic = $idtopic;
+        $this->difficulty = $difficulty;
+
+        return $this;
+    }
+
+    public function getImage(): ?image
+    {
+        return $this->image;
+    }
+
+    public function setImage(?image $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

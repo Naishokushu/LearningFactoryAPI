@@ -2,35 +2,31 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\QuestionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Question
- *
- * @ORM\Table(name="question", uniqueConstraints={@ORM\UniqueConstraint(name="idquestion_UNIQUE", columns={"idquestion"})})
- * @ORM\Entity
+ * @ApiResource()
+ * @ORM\Entity(repositoryClass=QuestionRepository::class)
  */
 class Question
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="idquestion", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private $idquestion;
+    private $id;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="content", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $content;
 
-    public function getIdquestion(): ?int
+    public function getId(): ?int
     {
-        return $this->idquestion;
+        return $this->id;
     }
 
     public function getContent(): ?string
@@ -38,12 +34,10 @@ class Question
         return $this->content;
     }
 
-    public function setContent(?string $content): self
+    public function setContent(string $content): self
     {
         $this->content = $content;
 
         return $this;
     }
-
-
 }

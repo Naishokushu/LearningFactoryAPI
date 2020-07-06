@@ -3,36 +3,45 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TopicRepository;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * Topic
- *
- * @ORM\Table(name="topic", uniqueConstraints={@ORM\UniqueConstraint(name="idtopic_UNIQUE", columns={"idtopic"})})
- * @ORM\Entity
- * @ApiResource
+ * @ApiResource()
+ * @ORM\Entity(repositoryClass=TopicRepository::class)
  */
 class Topic
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="idtopic", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private $idtopic;
+    private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=45, nullable=false)
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"module"})
      */
     private $name;
 
-    public function getIdtopic(): ?int
+    /**
+     * @ORM\OneToMany(targetEntity=Module::class, mappedBy="topic")
+     * 
+     */
+    private $modules;
+
+    public function __construct()
     {
-        return $this->idtopic;
+        $this->modules = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getName(): ?string
@@ -47,5 +56,34 @@ class Topic
         return $this;
     }
 
+    /**
+     * @return Collection|Module[]
+     */
+    public function getModules(): Collection
+    {
+        return $this->modules;
+    }
 
+    public function addModule(Module $module): self
+    {
+        if (!$this->modules->contains($module)) {
+            $this->modules[] = $module;
+            $module->setTopic($this);
+        }
+
+        return $this;
+    }
+
+    public function removeModule(Module $module): self
+    {
+        if ($this->modules->contains($module)) {
+            $this->modules->removeElement($module);
+            // set the owning side to null (unless already changed)
+            if ($module->getTopic() === $this) {
+                $module->setTopic(null);
+            }
+        }
+
+        return $this;
+    }
 }

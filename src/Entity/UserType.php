@@ -2,35 +2,31 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\UserTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * UserType
- *
- * @ORM\Table(name="user_type")
- * @ORM\Entity
+ * @ApiResource()
+ * @ORM\Entity(repositoryClass=UserTypeRepository::class)
  */
 class UserType
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="iduser_type", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private $iduserType;
+    private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=45, nullable=false)
+     * @ORM\Column(type="string", length=50)
      */
     private $type;
 
-    public function getIduserType(): ?int
+    public function getId(): ?int
     {
-        return $this->iduserType;
+        return $this->id;
     }
 
     public function getType(): ?string
@@ -44,6 +40,4 @@ class UserType
 
         return $this;
     }
-
-
 }
